@@ -1,4 +1,5 @@
 require 'byebug'
+require 'pry'
 
 def create_products
   b = Brand.create(:name => "Pågen")
@@ -9,6 +10,7 @@ def create_products
   Product.create(brand: b, :product_name => "Rostbröd", category: c, :barcode => "1212526767679", :sugar_content_gram => 15.2)
 end
 
+
 def create_brand
   b = Brand.create(:name => "Pågen")
 end
@@ -18,9 +20,9 @@ def create_category
 end
 
 def add_product_web
-  fill_in 'brand', with: 'Pågen'
+  fill_in 'brand', with: 1
   fill_in 'product_name', with: 'Lingongrova'
-  fill_in 'category', with: 'Mjukt bröd'
+  fill_in 'category', with: 1
   fill_in 'barcode', with: '1256256256526'
   fill_in 'sugar_content_gram', with: '8.5'
   click_button 'Add product'

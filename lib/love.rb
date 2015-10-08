@@ -6,6 +6,7 @@ require 'data_mapper'
 require 'dm-migrations'
 require 'bcrypt'
 require 'byebug'
+require 'pry'
 require './lib/product.rb'
 require './lib/brand.rb'
 require './lib/category.rb'
@@ -60,7 +61,9 @@ class Love < Sinatra::Base
   post '/admin/fill_out' do
     protected!
     begin
-      Product.create(brand: params[:brand], product_name: params[:product_name], category: params[:category], barcode: params[:barcode], sugar_content_gram: params[:sugar_content_gram])
+      brand = Brand.get(params[:brand])
+      category = Category.get(params[:category])
+      Product.first_or_create(brand: brand, product_name: params[:product_name], category: category, barcode: params[:barcode], sugar_content_gram: params[:sugar_content_gram])
       redirect '/admin/product_listing'
     rescue
       redirect 'admin/fill_out'

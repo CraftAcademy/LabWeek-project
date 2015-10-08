@@ -1,4 +1,5 @@
 require 'product_helper_spec'
+require 'pry'
 
 feature 'application setup' do
   feature 'root path' do
@@ -46,49 +47,58 @@ feature "get fill out form" do
     expect(page).to have_selector "input[name='sugar_content_gram']"
   end
 
-  xscenario 'admin user can add a new product' do
-    visit "/admin"
-    fill_in 'brand', with: 'Pågen'
-    fill_in 'product_name', with: 'Lingongrova'
-    fill_in 'category', with: 'Mjukt bröd'
-    fill_in 'barcode', with: '1256256256526'
-    fill_in 'sugar_content_gram', with: '8.5'
-    click_button 'Add product'
-    expect(page.status_code).to eq 200
-    expect(page.current_path).to eq '/admin/product_listing'
-    expect(page).to have_content 'Lingongrova'
+
+  feature "management of products" do
+    before do
+      basic_auth('love', 'shack')
+      visit "/admin"
+      create_category
+      create_brand
+    end
+
+    scenario 'admin user can add a new product' do
+      fill_in 'brand', with: 1
+      fill_in 'product_name', with: 'Lingongrova'
+      fill_in 'category', with: 1
+      fill_in 'barcode', with: '1256256256526'
+      fill_in 'sugar_content_gram', with: '8.5'
+      click_button 'Add product'
+      expect(page.status_code).to eq 200
+      expect(page.current_path).to eq '/admin/product_listing'
+      expect(page).to have_content 'Lingongrova'
+
+    end
+
+     scenario 'admin can view the product listing' do
+      add_product_web
+      expect(page.status_code).to eq 200
+      expect(page.current_path).to eq '/admin/product_listing'
+      expect(page).to have_content 'Brand'
+      expect(page).to have_content 'Product name'
+      expect(page).to have_content 'Category'
+
+      expect(page).to have_content 'Barcode'
+      expect(page).to have_content 'Sugar/100g'
+      expect(page).to have_content 'Ranking'
+      expect(page).to have_content 'Delete'
+      expect(page).to have_content 'Update'
+    end
+
+    scenario 'admin can delete a product' do
+      add_product_web
+      click_on 'Delete'
+      expect(page.status_code).to eq 200
+      expect(page.current_path).to eq '/admin/product_listing'
+      expect(page).to have_content 'No links in the system'
+    end
+
+    scenario 'show update form' do
+      add_product_web
+      click_on 'Update'
+      expect(page.status_code).to eq 200
+      expect(page).to have_content 'Update product'
+    end
   end
 
-  xscenario 'admin can view the product listing' do
-    visit "/admin"
-    add_product_web
-    expect(page.status_code).to eq 200
-    expect(page.current_path).to eq '/admin/product_listing'
-    expect(page).to have_content 'Brand'
-    expect(page).to have_content 'Product name'
-    expect(page).to have_content 'Category'
-    expect(page).to have_content 'Barcode'
-    expect(page).to have_content 'Sugar/100g'
-    expect(page).to have_content 'Ranking'
-    expect(page).to have_content 'Delete'
-    expect(page).to have_content 'Update'
-  end
-
-  xscenario 'admin can delete a product' do
-    visit "/admin"
-    add_product_web
-    click_on 'Delete'
-    expect(page.status_code).to eq 200
-    expect(page.current_path).to eq '/admin/product_listing'
-    expect(page).to have_content 'No links in the system'
-  end
-
-  xscenario 'show update form' do
-    visit "/admin"
-    add_product_web
-    click_on 'Update'
-    expect(page.status_code).to eq 200
-    expect(page).to have_content 'Update product'
-  end
 
 end
