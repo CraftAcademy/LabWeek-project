@@ -1,0 +1,15 @@
+rvm: 2.2.3
+script:
+- mkdir -p spec && bundle exec rspec spec
+before_install:
+- sed -i '2d' Gemfile
+- sudo apt-get update -qq
+- sudo apt-get install -qq postgresql-server-dev-9.3
+- 
+before_script:
+- psql -c 'create database love_test;' -U postgres
+deploy:
+  provider: heroku
+  api_key:
+    secure: ruluj4ogfNyCtVHz4hpmNDZIUT27fEf6uKdsjYmrKDj1OUiVqBi1IioiLWVheFRN9xy+ED3ReQJlQYJ2zk3v5jz16w+NI9GG8st22BzYWNgKKEhSwxSjQfVcWqND/Qgdmy4bntXglvrE1m4EO0bQDDDBgeszVLnzt8pIajCNQUCO0jUoS1QTg7vOxakNEKVo1lowb2zFTwC0QQjif9tap4KvSkrJ9iKcUkzWQcpcIjyuDWQpm2glpYp++u9xR1jekGrP70vL08dqYSEDf1kSbJTH1isxxjko9d3o6UvggmHcYr8vPQcj6Iw0NhW3NCIv2mDGBjztjXCQrqnWbYNPFV+Tthowuzq0vwcA0SB3gb7oIQOXC/lreheZh7Ws/Z3mFJVxuetS+x0c3LgIBVkRtajm1EAgfLTlTziQpaKhqKbzj4bMPw4jrQl7yBV5GYnOmTLxMjpYyktkYUiiHTDbQR2OKbnHAcRFNs0N5HV1jXIQZAaxVWkg0UkLzbBHfxP0k31rowJc7IIhR2RdrZXjmVCJjR1uHEMVxKayRtHzlvPd2KtvK7+iwC1RoJ+reKCF4zg7oQw7ZfiZfjDBlykJVh0h8/ti3frzow+o9++XPiYeykqd65lrnP+P26G1uP3GfXwqvDtf6DOVd6Z1aps3a684lki+/K3JYrT47cFCUPE=
+  app: loveofbread

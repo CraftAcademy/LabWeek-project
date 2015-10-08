@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="large-12 columns">
+    <div class="panel">
+      <h4>Update product</h4>
+
+      <div class="small-6 small-centered columns">
+        <div class="signup-panel">
+          <form action="/admin/update_product/<%= @product.id %>" method="post">
+            <input type="text" name="brand" value="<%= @product.brand %>" placeholder="Brand"<br>
+            <input type="text" name="product_name" value="<%= @product.product_name %>" placeholder="Product name"><br>
+            <input type="text" name="category" value="<%= @product.category %>" placeholder="Category"><br>
+            <input type="text" name="barcode" value="<%= @product.barcode %>" placeholder="Barcode"><br>
+            <input type="text" name="sugar_content_gram" value="<%= @product.sugar_content_gram %>" placeholder="Sugar content in grams"><br>
+            <button class="button round button success button expand" type="submit" formmethod="post"
+                    formaction="/admin/update_product/<%= @product.id %>">Update product
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

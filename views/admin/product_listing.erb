@@ -1,0 +1,49 @@
+<main>
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Product listing</h4>
+        <% if @product.empty? %>
+            <div class="row">
+              <div class="large-8 columns">
+                <div class="callout panel">
+                  <p>No links in the system</p>
+                </div>
+              </div>
+            </div>
+        <% else %>
+            <div class="row">
+              <div class="large-12 columns">
+                <table style="width:100%">
+                  <tr>
+                    <th>Brand</th>
+                    <th>Product name</th>
+                    <th>Category</th>
+                    <th>Barcode</th>
+                    <th>Sugar/100g</th>
+                    <th>Ranking</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                  </tr>
+                  <% @product.reverse_each do |product| %>
+                      <tr>
+                        <td><p><%= product[:brand] %></p></td>
+                        <td><p><%= product[:product_name] %></p></td>
+                        <td><p><%= product[:category] %></p></td>
+                        <td><p><%= product[:barcode] %></p></td>
+                        <td><p><%= product[:sugar_content_gram] %></p></td>
+                        <td><p><%= product[:ranking] %></p></td>
+                        <td><a class="small button" href="/admin/delete/<%= product[:id] %>">Delete</a></td>
+                        <td><a class="small button" href="/admin/update_product/<%= product[:id] %>">Update</a></td>
+                      </tr>
+                  <% end %>
+                </table>
+              </div>
+            </div>
+        <% end %>
+        <a class="small button" href="/admin/update_ranking">Update ranking</a>
+      </div>
+    </div>
+  </div>
+
+</main>
