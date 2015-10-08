@@ -1,4 +1,6 @@
 require 'sinatra/base'
+require 'sinatra/json'
+require 'json'
 require 'sinatra/flash'
 require 'data_mapper'
 require 'dm-migrations'
@@ -100,6 +102,18 @@ class Love < Sinatra::Base
       redirect '/admin/update_product/:id'
     end
   end
+
+  # API-related code below (example from here http://www.sinatrarb.com/contrib/json.html)
+
+  get '/api/v1' do
+    json :Hey! => 'Joe!'
+  end
+
+  get '/api/v1/product_listing' do
+    @product = Product.all
+    @product.to_json
+  end
+
 
   # start the server if ruby file executed directly
   run! if app_file == $0
