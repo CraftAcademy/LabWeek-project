@@ -5,6 +5,9 @@
 
 
 ## Team Info
+Bo Mattsson
+Gustaf Rudholm
+Christopher Comella
 
 
 #Key Technologies Used
