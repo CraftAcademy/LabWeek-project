@@ -1,5 +1,5 @@
 require 'product'
-#require 'pry'
+# require 'pry'
 require 'product_helper_spec'
 
 describe 'API' do
@@ -23,12 +23,11 @@ describe 'API' do
     end
   end
 
-  context 'GET /api/v1/product_listing/:id' do
-    it "should return SINGLE listing as JSON" do
-      visit '/api/v1/product_listing/product_listing?barcode=1212526767676'
-      expect(json.class).to eq(Hash)
+  context 'GET /api/v1/product_listing/:barcode' do
+    it "should return a SINGLE listing as JSON" do
+      visit '/api/v1/product_listing?barcode=1212526767676'
       # binding.pry
-      expect(json['product_name']).to eq('Lingongrova')
+      expect(json[0]['product_name']).to eq('Lingongrova')
     end
   end
 end

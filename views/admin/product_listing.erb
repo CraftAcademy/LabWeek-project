@@ -27,9 +27,9 @@
                   </tr>
                   <% @product.reverse_each do |product| %>
                       <tr>
-                        <td><p><%= product[:brand] %></p></td>
+                        <td><p><%= product.brand[:name] %></p></td>
                         <td><p><%= product[:product_name] %></p></td>
-                        <td><p><%= product[:category] %></p></td>
+                        <td><p><%= product.category[:name] %></p></td>
                         <td><p><%= product[:barcode] %></p></td>
                         <td><p><%= product[:sugar_content_gram] %></p></td>
                         <td><p><%= product[:ranking] %></p></td>

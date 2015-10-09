@@ -10,6 +10,7 @@ gem 'bcrypt'
 gem 'data_mapper'
 gem 'dm-postgres-adapter'
 gem 'pg'
+gem 'dotenv'
 
 group :development, :test do
   gem 'capybara'
@@ -22,5 +23,4 @@ group :development, :test do
   gem 'shotgun'
   gem 'database_cleaner', '~> 1.5.0'
   gem 'pry'
-  gem 'dotenv'
 end
