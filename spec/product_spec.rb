@@ -1,6 +1,5 @@
 require 'product'
 require 'product_helper_spec'
-require 'byebug'
 
 describe Product do
 

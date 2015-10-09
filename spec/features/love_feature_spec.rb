@@ -1,5 +1,5 @@
 require 'product_helper_spec'
-require 'pry'
+#require 'pry'
 
 feature 'application setup' do
   feature 'root path' do

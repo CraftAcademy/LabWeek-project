@@ -1,8 +1,8 @@
 require 'product'
-require 'pry'
+#require 'pry'
 require 'product_helper_spec'
 
-describe 'GET /api/v1/product_listing' do
+describe 'API' do
 
   let(:json) { JSON.parse(page.text) }
 
@@ -10,15 +10,25 @@ describe 'GET /api/v1/product_listing' do
     create_products
   end
 
-  it "should return all listings as JSON" do
-    visit '/api/v1/product_listing'
-    # binding.pry
-    expect(json.length).to eq(4)
-    expect(json.class).to eq(Array)
-    expect(json[0].class).to eq(Hash)
-    expect(json[0]['product_name']).to eq('Lingongrova')
-    expect(json[1]['product_name']).to eq('Tekaka')
-    expect(json[2]['product_name']).to eq('Rågbröd')
-    expect(json[3]['product_name']).to eq('Rostbröd')
+  context 'GET /api/v1/product_listing' do
+    it "should return ALL listings as JSON" do
+      visit '/api/v1/product_listing'
+      expect(json.length).to eq(4)
+      expect(json.class).to eq(Array)
+      expect(json[0].class).to eq(Hash)
+      expect(json[0]['product_name']).to eq('Lingongrova')
+      expect(json[1]['product_name']).to eq('Tekaka')
+      expect(json[2]['product_name']).to eq('Rågbröd')
+      expect(json[3]['product_name']).to eq('Rostbröd')
+    end
+  end
+
+  context 'GET /api/v1/product_listing/:id' do
+    it "should return SINGLE listing as JSON" do
+      visit '/api/v1/product_listing/product_listing?barcode=1212526767676'
+      expect(json.class).to eq(Hash)
+      # binding.pry
+      expect(json['product_name']).to eq('Lingongrova')
+    end
   end
 end

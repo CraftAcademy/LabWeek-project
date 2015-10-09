@@ -1,28 +1,35 @@
 require 'sinatra/base'
+require 'sinatra/cross_origin'
+require 'sinatra/contrib'
 require 'sinatra/json'
+require 'sinatra/namespace'
 require 'json'
 require 'sinatra/flash'
 require 'data_mapper'
 require 'dm-migrations'
 require 'bcrypt'
-require 'byebug'
-require 'pry'
+#require 'pry'
 require './lib/product.rb'
 require './lib/brand.rb'
 require './lib/category.rb'
+require 'dotenv'
+require './spec/product_helper_spec.rb'
 
 class Love < Sinatra::Base
+  register Sinatra::Namespace
   set :views, proc { File.join(root, '..', 'views') }
   enable :sessions
+  register Sinatra::CrossOrigin
   register Sinatra::Flash
   set :session_secret, '123321123'
   use Rack::Session::Pool
   env = ENV['RACK_ENV'] || "development"
+  Dotenv.load
 
   DataMapper.setup(:default, ENV['DATABASE_URL'] || "postgres://localhost/love_#{env}")
   DataMapper.finalize
-  #DataMapper.auto_upgrade!
-  DataMapper.auto_migrate!
+  DataMapper.auto_upgrade!
+  #DataMapper.auto_migrate!
   DataMapper::Model.raise_on_save_failure = true
 
   helpers do
@@ -37,6 +44,8 @@ class Love < Sinatra::Base
       @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == ['love', 'shack']
     end
   end
+  
+  #create_products
 
   # Testing the authentication. TODO: Delete this later.
   get '/protected' do
@@ -71,7 +80,7 @@ class Love < Sinatra::Base
   end
 
   get '/admin/product_listing' do
-    protected!
+    #protected!
     @product=Product.all
     erb :'admin/product_listing', layout: :'admin/admin_layout'
   end
@@ -108,15 +117,26 @@ class Love < Sinatra::Base
 
   # API-related code below (example from here http://www.sinatrarb.com/contrib/json.html)
 
-  get '/api/v1' do
-    json :Hey! => 'Joe!'
-  end
+  namespace '/api/v1' do
+    # This route is for testing in browser. Delete it whenever want.
+    get '/' do
+      json :Hey! => 'Joe!'
+    end
 
-  get '/api/v1/product_listing' do
-    @product = Product.all
-    @product.to_json
-  end
+    get '/product_listing' do
+      cross_origin
+      @product = Product.all
+      @product.to_json
+    end
 
+    get '/product_listing/:id' do
+      cross_origin
+      # matches "GET /product_listing?barcode=:id"
+      @product = Product.first(:barcode, @params[:barcode])
+      @product.to_json
+      # binding.pry
+    end
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0

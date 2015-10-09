@@ -1,3 +1,6 @@
+require 'net/http'
+require "json"
+
 class Product
 
   include DataMapper::Resource
@@ -26,6 +29,18 @@ class Product
       result = all(:sugar_content_gram.lt => product.sugar_content_gram).count+1
       product.update!(ranking: result)
     end
+  end
+
+  def self.import_product(ean)
+    request_uri = 'http://api.dabas.com/DABASService/V1/article/gtin/'
+    request_query = ean
+    request_end_uri = "/json?apikey=#{ENV['DABAS_API']}"
+    uri = URI("#{request_uri}#{request_query}#{request_end_uri}")
+    @response = JSON.parse(Net::HTTP.get(uri))
+    brand = Brand.first_or_create(name: @response["VarumarkeTillverkare"])
+    cat = Category.first_or_create(name: @response["Produktkod".to_s])
+    Product.create(brand: brand, :product_name => @response["Artikelbenamning"], category: cat, :barcode => @response["GTIN"], :sugar_content_gram => @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"])
+    Product.update_ranking
   end
 
   #Rankning can be seen as how many Products have suger_content_gram that is lower than current record + 1
