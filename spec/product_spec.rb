@@ -1,5 +1,6 @@
 require 'product'
 require 'product_helper_spec'
+#require 'pry'
 
 describe Product do
 
@@ -30,5 +31,13 @@ describe Product do
     expect(Product.first.ranking).to eq 2
   end
 
+  it 'can find a product in the database' do
+    create_products
+    expect(Product.find_product("1212526767678").id).to eq 3
+  end
+
+  it 'can convert a 13 digit barcode to dabas 14 digit GTIN' do
+    expect(Product.dabas_barcode("1212526767678")).to eq "01212526767678"
+  end
 
 end

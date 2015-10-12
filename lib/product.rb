@@ -31,9 +31,17 @@ class Product
     end
   end
 
-  def self.import_product(ean)
+  def self.dabas_barcode(barcode)
+    dabasbar = "0" + barcode
+  end
+
+  def self.find_product(barcode)
+    product = Product.first(barcode: barcode)
+  end
+
+  def self.import_product(barcode)
     request_uri = 'http://api.dabas.com/DABASService/V1/article/gtin/'
-    request_query = ean
+    request_query = barcode
     request_end_uri = "/json?apikey=#{ENV['DABAS_API']}"
     uri = URI("#{request_uri}#{request_query}#{request_end_uri}")
     @response = JSON.parse(Net::HTTP.get(uri))

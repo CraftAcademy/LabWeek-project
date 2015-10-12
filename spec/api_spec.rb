@@ -1,5 +1,5 @@
 require 'product'
-# require 'pry'
+#require 'pry'
 require 'product_helper_spec'
 
 describe 'API' do
@@ -26,8 +26,18 @@ describe 'API' do
   context 'GET /api/v1/product_listing/:barcode' do
     it "should return a SINGLE listing as JSON" do
       visit '/api/v1/product_listing?barcode=1212526767676'
-      # binding.pry
       expect(json[0]['product_name']).to eq('Lingongrova')
     end
+
+    it "should add a beginning 0 in barcode when calling api" do
+      visit '/api/v1/product_listing/1212526767679'
+      expect(json['barcode']).to eq('01212526767679')
+    end
+
+    xit "should add a new product in the database using dabas api if product doesnt exist in local database " do
+      visit '/api/v1/product_listing/7314871590007'
+      expect(json['barcode']).to eq('07314871590007')
+    end
+
   end
 end

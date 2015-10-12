@@ -8,7 +8,7 @@ require 'sinatra/flash'
 require 'data_mapper'
 require 'dm-migrations'
 require 'bcrypt'
-# require 'pry'
+#require 'pry'
 require './lib/product.rb'
 require './lib/brand.rb'
 require './lib/category.rb'
@@ -145,9 +145,16 @@ class Love < Sinatra::Base
 
     get '/product_listing/:barcode' do
       cross_origin
-      @product = Product.first(barcode: params[:barcode])
-      @product.to_json
-      # binding.pry
+      barcode = Product.dabas_barcode(params[:barcode])
+      if Product.first(barcode: barcode).nil?
+        Product.import_product(barcode)
+        @product = Product.first(barcode: barcode)
+        @product.to_json
+      else
+        @product = Product.first(barcode: barcode)
+        @product.to_json
+      end
+
     end
   end
 
