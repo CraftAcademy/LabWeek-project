@@ -11,6 +11,7 @@ gem 'data_mapper'
 gem 'dm-postgres-adapter'
 gem 'pg'
 gem 'dotenv'
+gem 'activesupport'
 
 group :development, :test do
   gem 'capybara'

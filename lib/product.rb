@@ -10,7 +10,7 @@ class Product
   property :barcode, String
   property :sugar_content_gram, Float
   property :ranking, Integer
-  property :image_url, String
+  property :image_url, Text
 
   belongs_to :brand
   belongs_to :category
@@ -50,6 +50,16 @@ class Product
     cat = Category.first_or_create(name: @response["Produktkod".to_s])
     Product.create(brand: brand, product_name: @response["Artikelbenamning"], category: cat, barcode: @response["GTIN"], sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"], image_url: @response["Bilder"][0]["Lank"])
     Product.update_ranking
+  end
+
+  def self.api_product_to_json(barcode)
+    @product = find_product(barcode)
+    product_hash = @product.attributes
+    brand = @product.brand.name
+    category = @product.category.name
+    brandarr = brand.downcase.strip.split('/')
+    product_hash.merge!(brand_name: "#{brandarr[0].downcase.capitalize}", category_name: category)
+    product_hash.to_json
   end
 
   #Rankning can be seen as how many Products have suger_content_gram that is lower than current record + 1
