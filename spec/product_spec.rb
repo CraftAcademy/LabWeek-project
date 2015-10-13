@@ -13,7 +13,7 @@ describe Product do
   it { is_expected.to validate_presence_of :product_name }
   it { is_expected.to validate_presence_of :barcode }
   it { is_expected.to validate_uniqueness_of :barcode }
-  it { is_expected.to validate_presence_of :sugar_content_gram }
+  xit { is_expected.to validate_presence_of :sugar_content_gram }
 
   it 'a product can be created' do
     create_products

@@ -122,7 +122,9 @@ class Love < Sinatra::Base
     protected!
     product = Product.get(params[:id])
     begin
-      product.update(brand: params[:brand], product_name: params[:product_name], category: params[:category], barcode: params[:barcode], sugar_content_gram: params[:sugar_content_gram])
+      brand = Brand.get(params[:brand])
+      category = Category.get(params[:category])
+      product.update(brand: brand, product_name: params[:product_name], category: category, barcode: params[:barcode], sugar_content_gram: params[:sugar_content_gram])
       redirect '/admin/product_listing'
     rescue
       redirect '/admin/update_product/:id'

@@ -10,6 +10,7 @@ class Product
   property :barcode, String
   property :sugar_content_gram, Float
   property :ranking, Integer
+  property :image_url, String
 
   belongs_to :brand
   belongs_to :category
@@ -17,7 +18,7 @@ class Product
   validates_presence_of :product_name, message: "Please fill in a name."
   validates_presence_of :barcode, message: "Please fill in barcode."
   validates_uniqueness_of :barcode, message: "Barcode already exists."
-  validates_presence_of :sugar_content_gram, message: "Please fill in sugar content."
+  #validates_presence_of :sugar_content_gram, message: "Please fill in sugar content."
 
   def self.rank(product)
     result = all(:sugar_content_gram.lt => product.sugar_content_gram).count+1
@@ -47,7 +48,7 @@ class Product
     @response = JSON.parse(Net::HTTP.get(uri))
     brand = Brand.first_or_create(name: @response["VarumarkeTillverkare"])
     cat = Category.first_or_create(name: @response["Produktkod".to_s])
-    Product.create(brand: brand, :product_name => @response["Artikelbenamning"], category: cat, :barcode => @response["GTIN"], :sugar_content_gram => @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"])
+    Product.create(brand: brand, product_name: @response["Artikelbenamning"], category: cat, barcode: @response["GTIN"], sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"], image_url: @response["Bilder"][0]["Lank"])
     Product.update_ranking
   end
 
