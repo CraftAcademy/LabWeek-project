@@ -100,5 +100,4 @@ feature "get fill out form" do
     end
   end
 
-
 end

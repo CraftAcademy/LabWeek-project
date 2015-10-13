@@ -1,0 +1,46 @@
+<main>
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Categories</h4>
+        <% if @category.empty? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>No categories in the system yet</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <table style="width:100%" id="myTable" class="tablesorter">
+                <thead>
+                <tr>
+                  <th>Category</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @category.reverse_each do |category| %>
+                  <tr>
+                    <td><p><%= category[:name] %></p></td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  $(document).ready(function () {
+        $("#myTable").tablesorter();
+      }
+  );
+
+</script>

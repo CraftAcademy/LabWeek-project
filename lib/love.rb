@@ -14,6 +14,7 @@ require './lib/brand.rb'
 require './lib/category.rb'
 require 'dotenv'
 require 'active_support/all'
+require 'tilt/erb' # Added based on RSpec suggestion (to remove 'warming' message)
 
 class Love < Sinatra::Base
   register Sinatra::Namespace
@@ -152,8 +153,16 @@ class Love < Sinatra::Base
         Product.api_product_to_json(barcode)
       end
     end
-
-    # start the server if ruby file executed directly
-    run! if app_file == $0
   end
+
+  get '/categories' do
+    cross_origin
+    @category = Category.all
+    erb :'web/categories'
+  end
+
+  # start the server if ruby file executed directly
+  run! if app_file == $0
+
 end
+

@@ -48,8 +48,17 @@ class Product
     @response = JSON.parse(Net::HTTP.get(uri))
     brand = Brand.first_or_create(name: @response["VarumarkeTillverkare"])
     cat = Category.first_or_create(name: @response["Produktkod".to_s])
-    Product.create(brand: brand, product_name: @response["Artikelbenamning"], category: cat, barcode: @response["GTIN"], sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"], image_url: @response["Bilder"][0]["Lank"])
+    img = Product.image_url(@response)
+    Product.create(brand: brand, product_name: @response["Artikelbenamning"], category: cat, barcode: @response["GTIN"], sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"], image_url: img)
     Product.update_ranking
+  end
+
+  def self.image_url(product)
+    if product["Bilder"][0].nil?
+      "undefined"
+    else
+      product["Bilder"][0]["Lank"]
+    end
   end
 
   def self.api_product_to_json(barcode)
