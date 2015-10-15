@@ -8,12 +8,13 @@ require 'sinatra/flash'
 require 'data_mapper'
 require 'dm-migrations'
 require 'bcrypt'
-#require 'pry'
+require 'pry'
 require './lib/product.rb'
 require './lib/brand.rb'
 require './lib/category.rb'
 require './lib/users.rb'
 require 'dotenv'
+require 'tilt/erb'
 
 class Love < Sinatra::Base
   register Sinatra::Namespace
@@ -225,9 +226,13 @@ class Love < Sinatra::Base
     erb :'web/product'
   end
 
-  get '/search' do
+  get '/search/:query' do
     cross_origin
-    # TODO: Code goes here
+    # binding.pry
+    @product_by_barcode = Product.first(barcode: params[:query])
+    @brand = Brand.first(name: params[:query])
+    @category = Category.first(name: params[:query])
+    @product = Product.first(product_name: params[:query])
     erb :'web/search'
   end
 
