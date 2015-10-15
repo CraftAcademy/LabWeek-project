@@ -1,5 +1,5 @@
 require 'product_helper_spec'
-require 'pry'
+# require 'pry'
 
 feature 'Web View' do
 
