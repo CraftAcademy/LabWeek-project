@@ -1,0 +1,48 @@
+<main>
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Product listing</h4>
+        <% if @product.nil? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>Product not in the system</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <!--TODO: Get rid of table and instead display info in vertical format (image at top and info below)-->
+              <table>
+                <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>Product name</th>
+                  <th>Category</th>
+                  <th>Barcode</th>
+                  <th>Sugar/100g</th>
+                  <th>Ranking</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <!--TODO: Get the image to display (TDD/BDD)-->
+                  <!--<td><img src="<%= @product.image_url %>" /></td>-->
+                  <td><p><%= @product.brand.name %></p></td>
+                  <td><p><%= @product.product_name %></p></td>
+                  <td><p><%= @product.category.name %></p></td>
+                  <td><p><%= @product.barcode %></p></td>
+                  <td><p><%= @product.sugar_content_gram %></p></td>
+                  <td><p><%= @product.ranking %></p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</main>

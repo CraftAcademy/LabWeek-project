@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find better Food.</title>
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/foundation.css">
   <link rel="stylesheet" href="/css/custom.css">
@@ -15,25 +14,72 @@
 
 <body>
 
-
 <div class="row">
-  <div class="large-12 columns">
-    <div class="row">
-      <div class="medium-12 large-12 columns">
-        <% if flash %>
-            <% flash.each do |name, msg| %>
-                <div id="flash-container" data-alert class="alert-box <%= name.to_s == 'notice' ? 'success' : 'alert' %>">
-                  <%= msg %>
-                  <a href="#" class="close">&times;</a>
-                </div>
-            <% end %>
+  <div class="small-1 small-centered columns"></div>
+  <div class="small-10 small-centered columns">
+    <nav class="top-bar" data-topbar role="navigation">
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/">Find better food!</a></h1>
+        </li>
+
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+        <ul class="right">
+
+          <% unless session[:user_id] %>
+              <li><a href="/sign_in">Sign In</a></li>
+              <li><a href="/join">Join</a></li>
+          <% end %>
+          <% if session[:user_id] %>
+              <li class="has-dropdown">
+                <a href="#">Admin</a>
+                <ul class="dropdown">
+                  <li><a href="/sign_out">Sign Out</a></li>
+                </ul>
+              </li>
+          <% end %>
+        </ul>
+        <!-- Left Nav Section -->
+        <ul class="left">
+        </ul>
+      </section>
+    </nav>
+    <% if flash %>
+        <% flash.each do |name, msg| %>
+            <div id="flash-container" data-alert class="alert-box <%= name.to_s == 'notice' ? 'success' : 'alert' %>">
+              <%= msg %>
+              <a href="#" class="close">&times;</a>
+            </div>
         <% end %>
-      </div>
-    </div>
-
-    <%= yield %>
-
+    <% end %>
   </div>
+</div>
+
+<%= yield %>
+
+<br>
+<!-- Footer Section -->
+</div>
+<div class="small-1 small-centered columns"></div>
+</div>
+<div class="row">
+  <div class="small-1 small-centered columns"></div>
+  <div class="small-10 small-centered columns">
+    <footer class="footer">
+      <div class="row">
+        <div class="small-12 columns">
+
+
+          <p class="copyright">Copyright © 2015. <a href="https://github.com/">FoodforGood AB.</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <div class="small-1 small-centered columns"></div>
 </div>
 
 <script src="/js/vendor/jquery.js"></script>

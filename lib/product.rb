@@ -11,6 +11,7 @@ class Product
   property :sugar_content_gram, Float
   property :ranking, Integer
   property :image_url, Text
+  property :dabas_category, String
 
   belongs_to :brand
   belongs_to :category
@@ -18,16 +19,11 @@ class Product
   validates_presence_of :product_name, message: "Please fill in a name."
   validates_presence_of :barcode, message: "Please fill in barcode."
   validates_uniqueness_of :barcode, message: "Barcode already exists."
-  #validates_presence_of :sugar_content_gram, message: "Please fill in sugar content."
+  validates_presence_of :sugar_content_gram, message: "Please fill in sugar content."
 
-  def self.rank(product)
-    result = all(:sugar_content_gram.lt => product.sugar_content_gram).count+1
-    product.update!(ranking: result)
-  end
-
-  def self.update_ranking
-    Product.all.each do |product|
-      result = all(:sugar_content_gram.lt => product.sugar_content_gram).count+1
+  def self.update_ranking(category)
+    Product.all(category: category).each do |product|
+      result = all(category: category, :sugar_content_gram.lt => product.sugar_content_gram).count+1
       product.update!(ranking: result)
     end
   end
@@ -46,11 +42,28 @@ class Product
     request_end_uri = "/json?apikey=#{ENV['DABAS_API']}"
     uri = URI("#{request_uri}#{request_query}#{request_end_uri}")
     @response = JSON.parse(Net::HTTP.get(uri))
-    brand = Brand.first_or_create(name: @response["VarumarkeTillverkare"])
-    cat = Category.first_or_create(name: @response["Produktkod".to_s])
     img = Product.image_url(@response)
-    Product.create(brand: brand, product_name: @response["Artikelbenamning"], category: cat, barcode: @response["GTIN"], sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"], image_url: img)
-    Product.update_ranking
+    dabas = Product.truncate_dabasid(@response)
+    brand = Brand.first_or_create(name: @response["VarumarkeTillverkare"])
+    cat = Product.set_category(dabas)
+    Product.create(product_name: @response["Artikelbenamning"],
+                   barcode: @response["GTIN"],
+                   sugar_content_gram: @response["Naringsinfo"][0]["Naringsvarden"][5]["Mangd"],
+                   image_url: img,
+                   dabas_category: dabas,
+                   brand: brand,
+                   category: cat)
+    Product.update_ranking(cat)
+  end
+
+  def self.set_category(dabasid)
+    catkey = Dabasid.first(name: dabasid).category_id
+    @cat = Category.first(id: catkey)
+  end
+
+  def self.truncate_dabasid(product)
+    longid = product["Produktkod".to_s]
+    shortid = longid[0, 4]
   end
 
   def self.image_url(product)

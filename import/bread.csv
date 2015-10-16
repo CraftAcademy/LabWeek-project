@@ -1,0 +1,24 @@
+category_id;name;is_parent;parent_id
+1;Bröd & Bageri;true;
+2;Bröd;true;1
+3;Fikabröd;true;1
+4;Kex & tilltugg;true;1
+5;Bageri;false;2
+6;Ljust bröd;false;2
+7;Mörkt & grovt bröd;false;2
+8;Hårt bröd & knäckebröd;false;2
+9;Glutenfritt bröd;false;2
+10;Portionsbröd;false;2
+11;Limpor;false;2
+12;Korv & hamburgerbröd;false;2
+14;Tårtor;false;3
+15;Bullar;false;3
+16;Kakor & kex;false;3
+17;Bottnar & maräng;false;3
+18;Glutenfri fika;false;3
+19;Kondisbitar;false;3
+21;Riskakor;false;4
+22;Kex;false;4
+23;Skorpor & ströbröd;false;4
+24;Grisini & krutonger;false;4
+25;Rulltårtor;false;3

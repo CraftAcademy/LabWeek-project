@@ -12,9 +12,10 @@ require 'bcrypt'
 require './lib/product.rb'
 require './lib/brand.rb'
 require './lib/category.rb'
+require './lib/users.rb'
+require './lib/dabas_id.rb'
 require 'dotenv'
-require 'active_support/all'
-require 'tilt/erb' # Added based on RSpec suggestion (to remove 'warming' message)
+require './lib/csv_import.rb'
 
 class Love < Sinatra::Base
   register Sinatra::Namespace
@@ -46,8 +47,53 @@ class Love < Sinatra::Base
     end
   end
 
+  get '/join' do
+    erb :join
+  end
+
+  post '/join' do
+    if (params[:name] == '') || (params[:email] == '') || (params[:user_name] == '') || (params[:password] == '') || (params[:password_confirm] == '')
+      flash[:warning] = "Some data is missing, please try again."
+      redirect '/join'
+    else
+      new_user = User.new
+      new_user.name = params[:name]
+      new_user.user_name = params[:user_name]
+      new_user.email = params[:email]
+      new_user.password = params[:password]
+      new_user.password_confirm = params[:password_confirm]
+      new_user.save
+      redirect '/'
+    end
+  end
+
+  get '/sign_in' do
+    erb :sign_in
+  end
+
+  post '/sign_in' do
+    if ((params[:email] == '') || (params[:password] == ''))
+      flash[:warning] = "You must have missed a field.  Please try again."
+      redirect '/sign_in'
+
+    else
+
+      begin
+        email = params[:email]
+        password = params[:password]
+        @user = User.authenticate(email, password)
+        session[:user_id] = @user.id
+        flash[:notice] = "Welcome #{@user.name}!"
+        redirect '/'
+      rescue
+        flash[:warning] = "Some data is invalid.  Please try again."
+        redirect "/sign_in"
+      end
+    end
+  end
 
   # Testing the authentication. TODO: Delete this later.
+  # Testing the authentication. Can delete this later (if want to refactor tests)
   get '/protected' do
     protected!
     "You're in, baby!"
@@ -133,6 +179,12 @@ class Love < Sinatra::Base
     end
   end
 
+  get '/sign_out' do
+    session[:user_id] = nil
+    flash[:notice] = "Thanks for visiting, hope to see you soon again!"
+    redirect '/'
+  end
+
   # API-related code below (example from here http://www.sinatrarb.com/contrib/json.html)
 
   namespace '/api/v1' do
@@ -161,8 +213,25 @@ class Love < Sinatra::Base
     erb :'web/categories'
   end
 
+  get '/category/:category_id' do
+    cross_origin
+    # TODO: Code goes here.
+    erb :'web/category'
+  end
+
+  get '/product/:barcode' do
+    cross_origin
+    @product = Product.first(barcode: params[:barcode])
+    erb :'web/product'
+  end
+
+  get '/search' do
+    cross_origin
+    # TODO: Code goes here
+    erb :'web/search'
+  end
+
   # start the server if ruby file executed directly
   run! if app_file == $0
 
 end
-
