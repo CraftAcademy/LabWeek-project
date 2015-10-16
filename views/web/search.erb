@@ -1,1 +1,168 @@
-Hello from the 'search' view!
+<main>
+<h1>Search Results</h1>
+  <!-- TODO: Refactor: Don't show tables unless they have data to display. Only display ONE "not in system" message-->
+  <!-- Begin Barcodes -->
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Barcode</h4>
+        <% if @product_by_barcode.nil? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>Barcode not in the system</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <table>
+                <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>Product name</th>
+                  <th>Category</th>
+                  <th>Barcode</th>
+                  <th>Sugar/100g</th>
+                  <th>Ranking</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><p><%= @product_by_barcode.brand.name %></p></td>
+                  <td><p><%= @product_by_barcode.product_name %></p></td>
+                  <td><p><%= @product_by_barcode.category.name %></p></td>
+                  <td><p><%= @product_by_barcode.barcode %></p></td>
+                  <td><p><%= @product_by_barcode.sugar_content_gram %></p></td>
+                  <td><p><%= @product_by_barcode.ranking %></p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- END Barcodes -->
+
+  <!-- Begin Brands -->
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Brand</h4>
+        <% if @brand.nil? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>Brand not in the system</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <table>
+                <thead>
+                <tr>
+                  <th>Brand</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><p><%= @brand.name %></p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- END Brands -->
+
+  <!-- Begin Categories -->
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Category</h4>
+        <% if @category.nil? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>Category not in the system</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <table>
+                <thead>
+                <tr>
+                  <th>Category</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><p><%= @category.name %></p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- END Categories -->
+
+  <!-- Begin Products -->
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="panel">
+        <h4>Product</h4>
+        <% if @product.nil? %>
+          <div class="row">
+            <div class="large-8 columns">
+              <div class="callout panel">
+                <p>Product not in the system</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="row">
+            <div class="large-12 columns">
+              <table>
+                <thead>
+                <tr>
+                  <th>Brand</th>
+                  <th>Product name</th>
+                  <th>Category</th>
+                  <th>Barcode</th>
+                  <th>Sugar/100g</th>
+                  <th>Ranking</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><p><%= @product.brand.name %></p></td>
+                  <td><p><%= @product.product_name %></p></td>
+                  <td><p><%= @product.category.name %></p></td>
+                  <td><p><%= @product.barcode %></p></td>
+                  <td><p><%= @product.sugar_content_gram %></p></td>
+                  <td><p><%= @product.ranking %></p></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- END Products -->
+
+</main>

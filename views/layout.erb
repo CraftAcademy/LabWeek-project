@@ -26,20 +26,35 @@
         <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
       </ul>
       <section class="top-bar-section">
+
         <!-- Right Nav Section -->
         <ul class="right">
-
+          <!-- TODO: 1) Decide if want to keep this feature. If so, test it and then remove this comment. -->
+          <!-- BEGIN Search Box -->
+          <li class="has-form">
+            <div class="row collapse">
+              <form action="/search" method="post">
+                <div class="large-8 small-9 columns">
+                  <input type="text" placeholder="barcode or text...">
+                </div>
+                <div class="large-4 small-3 columns">
+                  <button class="alert button expand" type="submit" formmethod="post" formaction="/search">Search</button>
+                </div>
+              </form>
+            </div>
+          </li>
+          <!-- END Search Box -->
           <% unless session[:user_id] %>
-              <li><a href="/sign_in">Sign In</a></li>
-              <li><a href="/join">Join</a></li>
+            <li><a href="/sign_in">Sign In</a></li>
+            <li><a href="/join">Join</a></li>
           <% end %>
           <% if session[:user_id] %>
-              <li class="has-dropdown">
-                <a href="#">Admin</a>
-                <ul class="dropdown">
-                  <li><a href="/sign_out">Sign Out</a></li>
-                </ul>
-              </li>
+            <li class="has-dropdown">
+              <a href="#">Admin</a>
+              <ul class="dropdown">
+                <li><a href="/sign_out">Sign Out</a></li>
+              </ul>
+            </li>
           <% end %>
         </ul>
         <!-- Left Nav Section -->
@@ -48,12 +63,12 @@
       </section>
     </nav>
     <% if flash %>
-        <% flash.each do |name, msg| %>
-            <div id="flash-container" data-alert class="alert-box <%= name.to_s == 'notice' ? 'success' : 'alert' %>">
-              <%= msg %>
-              <a href="#" class="close">&times;</a>
-            </div>
-        <% end %>
+      <% flash.each do |name, msg| %>
+        <div id="flash-container" data-alert class="alert-box <%= name.to_s == 'notice' ? 'success' : 'alert' %>">
+          <%= msg %>
+          <a href="#" class="close">&times;</a>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>
@@ -85,19 +100,19 @@
 <script src="/js/vendor/jquery.js"></script>
 <script src="/js/foundation.min.js"></script>
 <script>
-    $(document).ready(function () {
-        var flash = $('#flash-container');
-        if (flash.length > 0) {
-            window.setTimeout(function () {
-                flash.fadeTo(1000, 0).slideUp(1000, function () {
-                    $(this).remove();
-                });
-            }, 2000);
-        }
-    });
+  $(document).ready(function () {
+    var flash = $('#flash-container');
+    if (flash.length > 0) {
+      window.setTimeout(function () {
+        flash.fadeTo(1000, 0).slideUp(1000, function () {
+          $(this).remove();
+        });
+      }, 2000);
+    }
+  });
 </script>
 <script>
-    $(document).foundation();
+  $(document).foundation();
 </script>
 
 </body>
